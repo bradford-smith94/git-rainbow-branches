@@ -28,7 +28,18 @@ if git config --get-colorbool color.ui; then
     UPSTREAM_COLOR=$(git config --get-color color.branch.upstream "blue")
     RESET=$(git config --get-color "" "reset")
 
+    # rainbow colors
+    R=$(git config --get-color "" "red")
+    Y=$(git config --get-color "" "yellow")
+    G=$(git config --get-color "" "green")
+    C=$(git config --get-color "" "cyan")
+    B=$(git config --get-color "" "blue")
+    M=$(git config --get-color "" "magenta")
+    COLORS=("$R" "$Y" "$G" "$C" "$B" "$M")
+
     branches=$(git branch -avv)
+    declare -A remotes
+    remotes=()
     while read -r line; do
         if [[ $line == "* "* ]]; then
             # current branch
@@ -40,7 +51,18 @@ if git config --get-colorbool color.ui; then
         fi
         if [[ $line == "remotes"* ]]; then
             # remote branch
-            line="  $line"
+            line="  $line" # spacing to match current branch
+            remote_name=$(echo "$line" | grep -oP "remotes/\w+")
+            if [[ -z ${remotes[$remote_name]} ]]; then
+                len_remotes=${#remotes[@]}
+                len_colors=${#COLORS[@]}
+                idx=$(( len_remotes % len_colors ))
+                remotes[$remote_name]=${COLORS[$idx]}
+                color=${COLORS[$idx]}
+            else
+                color=${remotes[$remote_name]}
+            fi
+            line=$(echo "$line" | sed -e "s/\(remotes\/[a-zA-Z0-9_\.-]*\/[a-zA-Z0-9_\.-]*\)/${color}\1${RESET}/")
         fi
         printf "%s\n" "$line"
     done <<< "$branches"
