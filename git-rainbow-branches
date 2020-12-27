@@ -23,5 +23,27 @@ if [ "$1" == "--help" ]; then
     exit
 fi
 
-branches=$(git branch -avv)
-printf "%s" $branches
+if git config --get-colorbool color.ui; then
+    CURRENT_COLOR=$(git config --get-color color.branch.current "green")
+    UPSTREAM_COLOR=$(git config --get-color color.branch.upstream "blue")
+    RESET=$(git config --get-color "" "reset")
+
+    branches=$(git branch -avv)
+    while read -r line; do
+        if [[ $line == "* "* ]]; then
+            # current branch
+            line=$(echo "$line" | sed -e "s/^\* \([[:alnum:]]*\)/* ${CURRENT_COLOR}\1${RESET}/")
+        fi
+        if [[ $line == *"["* ]] && [[ $line == *"]"* ]]; then
+            # upstream branch
+            line=$(echo "$line" | sed -e "s/\[\([[:alnum:]]*\/[[:alnum:]]*\)\]/[${UPSTREAM_COLOR}\1${RESET}]/")
+        fi
+        if [[ $line == "remotes"* ]]; then
+            # remote branch
+            line="  $line"
+        fi
+        printf "%s\n" "$line"
+    done <<< "$branches"
+else
+    git branch -avv
+fi
