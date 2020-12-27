@@ -1,0 +1,44 @@
+.TH GIT-RAINBOW-BRANCHES 1 "27 DECEMBER 2020" v0.1.0 "Git-Rainbow-Branches Manual"
+.SH NAME
+git-rainbow-branches \- Rainbow printing for git branch -avv
+
+.SH SYNOPSIS
+.I git rainbow-branches
+[<options>]
+
+.SH DESCRIPTION
+Provides an improved color printing output for
+.B git branch -avv
+Each subsequent remote will print branches in a different color so that
+different remotes can be easily differentiated when viewing the output.
+.PP
+.B Note:
+git-rainbow-branches is not a part of (or affiliated with)
+.BR git (1).
+
+.SH OPTIONS
+.TP
+.BR \-\-help
+If given first opens this manpage, else prints a usage message.
+
+.SH COLORS
+The command uses
+.BR git-config (1)
+to decide whether or not to print in colors (using the value of color.ui) -
+although, without colors it's just the output of
+.B git branch -avv
+
+.SH AUTHOR
+Bradford Smith <\fIhttps://github.com/bradford-smith94\fR>
+
+.SH LICENSE
+MIT.
+
+.SH BUGS
+Please report bugs at:
+<\fIhttps://github.com/bradford-smith94/git-rainbow-branches/issues\fR>.
+
+.SH "SEE ALSO"
+.BR git (1)
+.BR git-config (1)
+.BR git-branch (1)
