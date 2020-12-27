@@ -1,0 +1,27 @@
+#!/bin/bash
+# Bradford Smith
+# git-rainbow-branches
+# 2020-12-27
+# Rainbow color output for `git branch -avv`
+
+# shellcheck disable=2034
+# this disables the "appears unused" warning from shellcheck because even though
+# this script doesn't use the variables git does
+USAGE=""
+SUBDIRECTORY_OK=true
+
+# shellcheck source=/dev/null
+# this is added because shellcheck cannot follow the dynamic path to
+# git-sh-setup, this is the way git recommends to do it, so I am ok silencing
+# the warning here
+source "$(git --exec-path)/git-sh-setup"
+
+require_work_tree
+
+if [ "$1" == "--help" ]; then
+    man git-rainbow-branches
+    exit
+fi
+
+branches=$(git branch -avv)
+printf "%s" $branches
