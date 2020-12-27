@@ -44,14 +44,15 @@ if git config --get-colorbool color.ui; then
         if [[ $line == "* "* ]]; then
             # current branch
             line=$(echo "$line" | sed -e "s/^\* \([[:alnum:]]*\)/* ${CURRENT_COLOR}\1${RESET}/")
+        else
+            line="  $line" # spacing to match current branch
         fi
         if [[ $line == *"["* ]] && [[ $line == *"]"* ]]; then
             # upstream branch
             line=$(echo "$line" | sed -e "s/\[\([[:alnum:]]*\/[[:alnum:]]*\)\]/[${UPSTREAM_COLOR}\1${RESET}]/")
         fi
-        if [[ $line == "remotes"* ]]; then
+        if [[ $line == "  remotes"* ]]; then
             # remote branch
-            line="  $line" # spacing to match current branch
             remote_name=$(echo "$line" | grep -oP "remotes/\w+")
             if [[ -z ${remotes[$remote_name]} ]]; then
                 len_remotes=${#remotes[@]}
