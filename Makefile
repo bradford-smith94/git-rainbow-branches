@@ -35,7 +35,8 @@ install:
 	install -Dm 0755 $(PRG) -t $(DESTDIR)$(PREFIX)/bin
 	install -Dm 0644 $(LICENSE) -t $(DESTDIR)$(LICENSEPREFIX)/$(PRG)
 	install -Dm 0644 $(MAN) -t $(DESTDIR)$(MANPREFIX)
+	gzip $(DESTDIR)$(MANPREFIX)/$(MAN)
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/bin/$(PRG)
-	$(RM) $(DESTDIR)$(MANPREFIX)/$(MAN)
+	$(RM) $(DESTDIR)$(MANPREFIX)/$(MAN).gz
