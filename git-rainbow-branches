@@ -1,7 +1,7 @@
 #!/bin/bash
 # Bradford Smith
 # git-rainbow-branches
-# 2020-12-27
+# 2021-01-05
 # Rainbow color output for `git branch -avv`
 
 # shellcheck disable=2034
@@ -43,17 +43,17 @@ if git config --get-colorbool color.ui; then
     while read -r line; do
         if [[ $line == "* "* ]]; then
             # current branch
-            line=$(echo "$line" | sed -e "s/^\* \([[:alnum:]]*\)/* ${CURRENT_COLOR}\1${RESET}/")
+            line=$(echo "$line" | sed -e "s/^\* \([a-zA-Z0-9_\.-]*\)/* ${CURRENT_COLOR}\1${RESET}/")
         else
             line="  $line" # spacing to match current branch
         fi
         if [[ $line == *"["* ]] && [[ $line == *"]"* ]]; then
             # upstream branch
-            line=$(echo "$line" | sed -e "s/\[\([[:alnum:]]*\/[[:alnum:]]*\)\]/[${UPSTREAM_COLOR}\1${RESET}]/")
+            line=$(echo "$line" | sed -e "s/\[\([a-zA-Z0-9_\.-]*\/[a-zA-Z0-9_\.-]*\)\]/[${UPSTREAM_COLOR}\1${RESET}]/")
         fi
         if [[ $line == "  remotes"* ]]; then
             # remote branch
-            remote_name=$(echo "$line" | grep -oP "remotes/\w+")
+            remote_name=$(echo "$line" | grep -oP "remotes/[\w_\.-]+")
             if [[ -z ${remotes[$remote_name]} ]]; then
                 len_remotes=${#remotes[@]}
                 len_colors=${#COLORS[@]}
