@@ -1,6 +1,6 @@
 # Bradford Smith
 # Makefile for git-rainbow-branches
-# 2020-12-27
+# 2021-10-29
 ################################################################################
 
 PREFIX ?= /usr/local
@@ -35,7 +35,7 @@ install:
 	install -Dm 0755 $(PRG) -t $(DESTDIR)$(PREFIX)/bin
 	install -Dm 0644 $(LICENSE) -t $(DESTDIR)$(LICENSEPREFIX)/$(PRG)
 	install -Dm 0644 $(MAN) -t $(DESTDIR)$(MANPREFIX)
-	gzip $(DESTDIR)$(MANPREFIX)/$(PRG).1
+	gzip -9nf $(DESTDIR)$(MANPREFIX)/$(PRG).1
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/bin/$(PRG)
