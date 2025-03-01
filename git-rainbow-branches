@@ -1,7 +1,7 @@
 #!/bin/bash
 # Bradford Smith
 # git-rainbow-branches
-# 2021-10-29
+# 2025-03-01
 # Rainbow color output for `git branch -avv`
 
 # shellcheck disable=2034
@@ -37,6 +37,7 @@ if git config --get-colorbool color.ui; then
     M=$(git config --get-color "" "magenta")
     COLORS=("$R" "$Y" "$G" "$C" "$B" "$M")
 
+    output=""
     branches=$(git branch -avv)
     declare -A remotes
     remotes=()
@@ -65,8 +66,9 @@ if git config --get-colorbool color.ui; then
             fi
             line=$(echo "$line" | sed -e "s/\(remotes\/[a-zA-Z0-9_\.-]*\/[a-zA-Z0-9_\.-]*\)/${color}\1${RESET}/")
         fi
-        printf "%s\n" "$line"
+        output="${output}${line}\n"
     done <<< "$branches"
+    echo -en "$output" | less -FRX
 else
-    git branch -avv
+    git branch -avv | less -FRX
 fi
